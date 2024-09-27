@@ -354,6 +354,7 @@ We will begin by defining the points of our square of tungsten.
     p4 = gmsh.model.occ.addPoint(15e-3, -15e-3, 0, lc)
     
 These points can then be joined together using lines. It is important that we pay close attention to the direction that these lines are going.
+
 .. code-block:: python
  
     line_1_2 = gmsh.model.occ.addLine(p1, p2)
@@ -397,6 +398,7 @@ Here we stretch both the tungsten and CuCrZr surfaces by 5e-3 in the z-direction
 Upon performing the extrusion, GMSH will define any necessary surfaces and volumes for us. However, this means that the surface of the outer cylinder will have been defined twice. Therefore it is necessary to remove any duplicate elements via 
 
 .. code-block:: python
+
     remove_overlap = gmsh.model.occ.remove_all_duplicates()
 
 It is important that all points in our model are defined using the same characteristic length. Therefore we need to define a couple of points across the mesh to have the same `lc`. Here we have used points on the inner and outer tube perimeters, on both the front and back of the mesh:
@@ -417,6 +419,7 @@ The model can then be synchronized:
     gmsh.model.occ.synchronize()
 
 At any point, the GMSH GUI can be opened by running the line
+
 .. code-block:: python
 
     gmsh.fltk.run()
