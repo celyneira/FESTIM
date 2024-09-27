@@ -307,9 +307,8 @@ If you have a CAD model, you can export it to a mesh with SALOME.
 8. Export the mesh to MED
 9. Convert the mesh to XDMF (don't forget to change the cell and facet types in the script)
 
-------------------
 Meshes from GMSH
-------------------
+----------------
 
 The Python API of GMSH can be used to create meshes that are useable in FESTIM. Here we will walk through its usage when creating a monoblock subsection consisting of tungsten surrounding a tube of CuCrZr
 
