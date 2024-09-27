@@ -319,6 +319,7 @@ The Python API of GMSH can be used to create meshes that are useable in FESTIM. 
 
 Meshing the geometry with GMSH
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Firstly, GMSH must be imported and initialised.
 
 .. code-block:: python
@@ -327,7 +328,6 @@ Firstly, GMSH must be imported and initialised.
     
     gmsh.initialize()
     gmsh.model.add("mesh")
-
 
 We can set the size of our mesh using:
 
@@ -410,7 +410,6 @@ It is important that all points in our model are defined using the same characte
     
     outer_front_perimiter_point = gmsh.model.occ.addPoint(10e-3, 0, 5e-3, lc)
     outer_back_perimiter_point = gmsh.model.occ.addPoint(10e-3, 0, 0, lc)
-
 
 The model can then be synchronized:
 
@@ -565,6 +564,7 @@ This can be done using meshio via the following process:
 
 Using the mesh in FESTIM
 ^^^^^^^^^^^^^^^^^^^^^^^^^
+
 A FESTIM simulation can then be run:
 
 .. code-block:: bash
@@ -594,13 +594,11 @@ A FESTIM simulation can then be run:
     model.initialise()
     model.run()
 
-
 This produces the following visualisation in Paraview:
 
 .. thumbnail:: ../images/gmsh_tut_5.png
     :width: 400
     :align: center
-
 
 ------------------
 Meshes from FEniCS
