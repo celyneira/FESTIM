@@ -314,8 +314,8 @@ Meshes from GMSH
 The Python API of GMSH can be used to create meshes that are useable in FESTIM. Here we will walk through its usage when creating a monoblock subsection consisting of tungsten surrounding a tube of CuCrZr
 
 .. thumbnail:: ../images/gmsh_tut_1.png
-    :width: 400
-    :align: center
+   :width: 400
+   :align: center
 
 Meshing the geometry with GMSH
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -427,8 +427,8 @@ after synchronizing the model.
 Running this command at this stage will open the GUI, displaying something that looks like this:
 
 .. thumbnail:: ../images/gmsh_tut_2.png
-    :width: 400
-    :align: center
+   :width: 400
+   :align: center
 
 To be used with FESTIM, it is necessary for us to define surface and volume markers. 
 
@@ -448,14 +448,15 @@ After opening the GUI, again after synchronising and using `gmsh.fltk.run()`, go
 This will make the surfaces are visible and selectable in the visualisation.
 
 .. thumbnail:: ../images/gmsh_tut_3.png
-    :width: 400
-    :align: center
+   :width: 400
+   :align: center
+
 
 We can then hover our mouse over each surface to see its information. For example, we can see that the front tungsten surface is defined as Plane 7, and borders the volume 1. 
 
 .. thumbnail:: ../images/gmsh_tut_4.png
-    :width: 400
-    :align: center
+   :width: 400
+   :align: center
 
 We can now look at each surface and interface and assign the necessary IDs.
 
@@ -597,8 +598,8 @@ A FESTIM simulation can then be run:
 This produces the following visualisation in Paraview:
 
 .. thumbnail:: ../images/gmsh_tut_5.png
-    :width: 400
-    :align: center
+   :width: 400
+   :align: center
 
 ------------------
 Meshes from FEniCS
