@@ -316,11 +316,13 @@ The Python API of GMSH can be used to create meshes that are useable in FESTIM. 
 .. thumbnail:: ../images/gmsh_tut_1.png
     :width: 400
     :align: center
+
 Meshing the geometry with GMSH
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Firstly, GMSH must be imported and initialised.
 
 .. code-block:: python
+    
     import gmsh as gmsh
     
     gmsh.initialize()
@@ -328,7 +330,9 @@ Firstly, GMSH must be imported and initialised.
 
 
 We can set the size of our mesh using:
+
 .. code-block:: python
+    
     lc = 1e-3
 
 Models in GMSH consist of a series of:
@@ -341,7 +345,9 @@ Models in GMSH consist of a series of:
 -  Volumes
 
 We will begin by defining the points of our square of tungsten.
+
 .. code-block:: python
+    
     p1 = gmsh.model.occ.addPoint(-15e-3, 15e-3, 0, lc)
     p2 = gmsh.model.occ.addPoint(-15e-3, -15e-3, 0, lc)
     p3 = gmsh.model.occ.addPoint(15e-3, 15e-3, 0, lc)
@@ -349,6 +355,7 @@ We will begin by defining the points of our square of tungsten.
     
 These points can then be joined together using lines. It is important that we pay close attention to the direction that these lines are going.
 .. code-block:: python
+ 
     line_1_2 = gmsh.model.occ.addLine(p1, p2)
     line_1_3 = gmsh.model.occ.addLine(p1, p3)
     line_2_4 = gmsh.model.occ.addLine(p2, p4)
@@ -356,12 +363,15 @@ These points can then be joined together using lines. It is important that we pa
 
 These are then used to create curve loops or wires. 
 Wires and curve loops must be closed loops, and the list of lines must flow in the correct direction so as to form a complete loop.
+
 .. code-block:: python
+    
     base_loop = gmsh.model.occ.addWire([line_1_2, line_2_4, -line_3_4, -line_1_3])
 
 We can also define the inner and outer circles and loops for the CuCrZr tube.
 
 .. code-block:: python
+
     inner_circle = gmsh.model.occ.addCircle(0,0,0,5e-3)
     outer_circle = gmsh.model.occ.addCircle(0,0,0,10e-3)
     
@@ -370,7 +380,9 @@ We can also define the inner and outer circles and loops for the CuCrZr tube.
 
 Surfaces are defined using loops, where the first loop in the list denotes the outer borders of the surface, and any others define holes within the surface. 
 Here `base_surface` is our tungsten layer, and so it consists of our base rectangle curve loop, with a hole defined by the outer CuCrZr loop.
+
 .. code-block:: python
+
     base_surface = gmsh.model.occ.addPlaneSurface([base_loop, outer_circle_loop])
     cylinder_surface = gmsh.model.occ.addPlaneSurface([outer_circle_loop, inner_circle_loop])
     
@@ -378,16 +390,19 @@ While we could then define another surface above the first and join them togethe
 Here we stretch both the tungsten and CuCrZr surfaces by 5e-3 in the z-direction, and 0 in the x and y.
 
 .. code-block:: python
+
     outer_layer_extrusion = gmsh.model.occ.extrude([(2, base_surface)], 0, 0, 5e-3, numElements=[100])
     interface_layer_extrusion = gmsh.model.occ.extrude([(2, cylinder_surface)], 0, 0, 5e-3, numElements=[100])
 
 Upon performing the extrusion, GMSH will define any necessary surfaces and volumes for us. However, this means that the surface of the outer cylinder will have been defined twice. Therefore it is necessary to remove any duplicate elements via 
+
 .. code-block:: python
     remove_overlap = gmsh.model.occ.remove_all_duplicates()
 
 It is important that all points in our model are defined using the same characteristic length. Therefore we need to define a couple of points across the mesh to have the same `lc`. Here we have used points on the inner and outer tube perimeters, on both the front and back of the mesh:
 
 .. code-block:: python
+
     inner_front_perimiter_point = gmsh.model.occ.addPoint(5e-3, 0, 5e-3, lc)
     inner_back_perimiter_point = gmsh.model.occ.addPoint(5e-3, 0, 0, lc)
     
@@ -396,11 +411,14 @@ It is important that all points in our model are defined using the same characte
 
 
 The model can then be synchronized:
+
 .. code-block:: python
+
     gmsh.model.occ.synchronize()
 
 At any point, the GMSH GUI can be opened by running the line
 .. code-block:: python
+
     gmsh.fltk.run()
 
 after synchronizing the model.
@@ -413,7 +431,9 @@ Running this command at this stage will open the GUI, displaying something that 
 To be used with FESTIM, it is necessary for us to define surface and volume markers. 
 
 If the element has been defined explicitly, this is as easy as doing the following:
+
 .. code-block:: python
+
     id_number = 1
     gmsh.model.addPhysicalGroup(2, [base_surface, cylinder_surface], id_number, name = "surface")
 
@@ -438,6 +458,7 @@ We can then hover our mouse over each surface to see its information. For exampl
 We can now look at each surface and interface and assign the necessary IDs.
 
 .. code-block:: python
+
     front_id = 1
     back_id = 2
     left_id = 3
@@ -463,13 +484,17 @@ We can now look at each surface and interface and assign the necessary IDs.
     gmsh.model.addPhysicalGroup(3, [2], cucrzr_id, name = "cucrzr")
 
 The model must then be resynchronized before generating the mesh.
+
 .. code-block:: python
+
     gmsh.model.occ.synchronize()
     
     gmsh.model.mesh.generate(3)
 
 The mesh can then be written to a file, and GMSH finalised. 
+
 .. code-block:: python
+
     gmsh.write("my_mesh.msh")
     gmsh.finalize()
 
@@ -481,7 +506,9 @@ Converting meshes using meshio
 However, for use in FESTIM, our mesh now has to be converted into XDMF files, and the surfaces and volume IDs extracted.
 
 This can be done using meshio via the following process:
+
 .. code-block:: python
+
     import meshio
     import numpy as np
     
@@ -537,7 +564,8 @@ Using the mesh in FESTIM
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 A FESTIM simulation can then be run:
 
-.. code-block:: python
+.. code-block:: bash
+
     import festim as F
     
     model = F.Simulation()
@@ -566,8 +594,7 @@ A FESTIM simulation can then be run:
 
 This produces the following visualisation in Paraview:
 
-
-.. thumbnail:: ../images/gmsh_tut_3.png
+.. thumbnail:: ../images/gmsh_tut_5.png
     :width: 400
     :align: center
 
