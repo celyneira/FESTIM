@@ -339,7 +339,7 @@ Models in GMSH consist of a series of:
 - Points
 - Lines
 -  Wires / Curve Loops
-   - whether we use curve loops or wires depends on whether we use the `.occ` or `.geo` geometry kernels. `.occ` allows for direct construction of more complex features such as cylinders, whereas using `.geo` requires explicit user definition of all the points, surfaces and volumes that would make up the cylinder. 
+  - whether we use curve loops or wires depends on whether we use the `.occ` or `.geo` geometry kernels. `.occ` allows for direct construction of more complex features such as cylinders, whereas using `.geo` requires explicit user definition of all the points, surfaces and volumes that would make up the cylinder. 
 -  Surfaces
 -  Surface Loops
 -  Volumes
@@ -356,7 +356,7 @@ We will begin by defining the points of our square of tungsten.
 These points can then be joined together using lines. It is important that we pay close attention to the direction that these lines are going.
 
 .. code-block:: python
- 
+
     line_1_2 = gmsh.model.occ.addLine(p1, p2)
     line_1_3 = gmsh.model.occ.addLine(p1, p3)
     line_2_4 = gmsh.model.occ.addLine(p2, p4)
@@ -450,7 +450,6 @@ This will make the surfaces are visible and selectable in the visualisation.
 .. thumbnail:: ../images/gmsh_tut_3.png
    :width: 400
    :align: center
-
 
 We can then hover our mouse over each surface to see its information. For example, we can see that the front tungsten surface is defined as Plane 7, and borders the volume 1. 
 
